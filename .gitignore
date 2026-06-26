@@ -1,0 +1,6 @@
+﻿venv/
+__pycache__/
+*.pyc
+security_triage.db
+page_snapshot.png
+.env

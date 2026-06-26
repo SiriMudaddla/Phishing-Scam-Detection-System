@@ -53,17 +53,15 @@ except Exception as e:
     st.error(f"Failed to initialize Gemini Client. Ensure GEMINI_API_KEY is set. Error: {e}")
     st.stop()
 
-# Page configuration
 st.set_page_config(page_title="Ultimate Threat Intelligence Matrix", page_icon="🛡️", layout="centered")
 
-# Custom CSS styling
 st.markdown(
     """
     <style>
     .centered-title { text-align: center; font-weight: bold; margin-bottom: 5px; }
     .centered-subtitle { text-align: center; color: #666; margin-bottom: 30px; }
     .centered-header { text-align: center; margin-top: 25px; margin-bottom: 15px; }
-    .metric-box { padding: 12px; border-radius: 6px; background-color: #f1f3f6; margin-bottom: 12px; border-left: 5px solid #1E88E5; }
+    .metric-box { padding: 12px; border-radius: 6px; background-color: #f1f3f6; margin-bottom: 12px; border-left: 5px solid #1E88E5; color: #111111; }
     .danger-box { padding: 12px; border-radius: 6px; background-color: #fde8e8; margin-bottom: 12px; border-left: 5px solid #E53935; color: #9B1C1C; }
     </style>
     """,
@@ -73,7 +71,7 @@ st.markdown(
 st.markdown("<h1 class='centered-title'>🛡️ Ultimate Threat Intelligence Matrix</h1>", unsafe_allow_html=True)
 st.markdown("<p class='centered-subtitle'>All Advanced Layers: Sockets, WHOIS, Database Caching, and Visual Analysis</p>", unsafe_allow_html=True)
 
-# --- SIDEBAR DATABASE VIEW (FIXED STRING EXTRACTION) ---
+# --- SIDEBAR DATABASE VIEW ---
 st.sidebar.title("📊 Triage History")
 
 if st.sidebar.button("Clear Session / Refresh Dashboard"):
@@ -88,7 +86,6 @@ try:
     if recent_scans:
         for scan in recent_scans:
             st.sidebar.caption(f"⏱️ {scan[0]}")
-            # REMOVED STRING SLICING STRINGS TO EXPAND HISTORY DISPLAY WIDTH FULLY
             st.sidebar.markdown(f"**Target:**\n`{scan[1]}`")
             st.sidebar.markdown(f"**Diagnosis:**\n{scan[2]}")
             st.sidebar.markdown("---")
@@ -99,7 +96,7 @@ except Exception as e:
 
 analysis_type = st.radio("Select Security Module:", ("Forensic Email Check", "Deep URL Metadata & Visual Scan"))
 
-# --- UTILITIES ---
+# --- NETWORK UTILITIES ---
 
 def expand_and_trace_url(url):
     if not url.startswith(('http://', 'https://')):
@@ -190,7 +187,6 @@ if analysis_type == "Forensic Email Check":
                 )
                 st.markdown("<h3 class='centered-header'>AI Analysis Verdict</h3>", unsafe_allow_html=True)
                 st.write(response.text)
-                # LOG FULL TEXT AND RESPONSES WITHOUT ARBITRARY CUTOFF CHARACTERS
                 log_to_db("Text Scan", user_input, response.text)
 
 else:
